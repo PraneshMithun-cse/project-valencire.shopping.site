@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Compression blood noir™ — VALENCIRÉ</title>
+  <style>
+    :root{
+      --primary-black:#000;
+      --primary-white:#fff;
+      --muted:#f2f2f2;
+      --text:#111;
+      --muted-text:#666;
+      --maxw:1200px;
+    }
+    *{box-sizing:border-box}
+    body{font-family:Inter, "Helvetica Neue", Arial, sans-serif; margin:0; color:var(--text); background:var(--primary-white);}
+    a{color:inherit;text-decoration:none}
+
+    /* Page container */
+    .page {
+      max-width: calc(var(--maxw) + 80px);
+      margin: 0 auto;
+      padding: 30px 40px;
+    }
+
+    /* Top nav / back */
+    .topbar {
+      display:flex;
+      align-items:center;
+      gap:20px;
+      margin-bottom: 18px;
+    }
+    .brand {
+      font-weight:700;
+      letter-spacing:2px;
+    }
+    .back {
+      color:var(--muted-text);
+      font-size:14px;
+      text-decoration:none;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    /* Layout: large grid */
+    .product-layout {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 36px;
+      align-items: start;
+    }
+
+    /* Big hero / gallery */
+    .gallery-wrap {
+      background: var(--muted);
+      border-radius: 6px;
+      padding: 28px;
+    }
+
+    .hero {
+      width:100%;
+      height: 560px;
+      border-radius:6px;
+      overflow:hidden;
+      background:#e9e9e9;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .hero img{
+      max-width:100%;
+      max-height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .thumbs {
+      margin-top:20px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:flex-start;
+    }
+    .thumb {
+      width:56px;
+      height:56px;
+      border-radius:6px;
+      overflow:hidden;
+      background:#fff;
+      border:2px solid transparent;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .thumb img{ width:100%; height:100%; object-fit:cover; display:block }
+    .thumb.active{ border-color: rgba(0,0,0,0.12) }
+
+    /* Right column (actions) */
+    .actions {
+      position: sticky;
+      top: 28px;
+      align-self:start;
+    }
+
+    .meta {
+      background: transparent;
+      padding: 6px 0 20px 0;
+    }
+    .label-small { font-size:11px; color:var(--muted-text); letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; display:block;}
+    .title { font-size:22px; font-weight:700; margin-bottom:10px; }
+    .price { font-size:20px; font-weight:800; margin-bottom:12px; }
+    .variation-row { display:flex; gap:10px; align-items:center; margin-bottom:14px; }
+
+    /* Variation thumbnails */
+    .var-thumb { width:46px; height:46px; border-radius:6px; overflow:hidden; border:2px solid transparent; cursor:pointer; }
+    .var-thumb img{ width:100%; height:100%; object-fit:cover }
+    .var-thumb.selected{ border-color:#111; transform:translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.06) }
+
+    /* Size selector */
+    .size-wrap { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; margin-bottom:16px; }
+    .size-btn { padding:8px 12px; border-radius:8px; border:1px solid #ddd; background:#fff; cursor:pointer; font-weight:600; }
+    .size-btn.selected { border-color:#111; background:#111; color:#fff; }
+
+    /* Add to bag */
+    .add-btn {
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      width:100%;
+      padding:16px 18px;
+      background:var(--primary-black);
+      color:var(--primary-white);
+      border:none;
+      border-radius:8px;
+      font-weight:700;
+      cursor:pointer;
+      letter-spacing:0.6px;
+    }
+
+    .notes { font-size:13px; color:var(--muted-text); margin-top:12px; line-height:1.4 }
+
+    /* Right small links */
+    .right-links { margin-top:18px; font-size:14px; display:flex; flex-direction:column; gap:12px; color:var(--muted-text) }
+    .right-links a { color:var(--muted-text); }
+
+    /* Responsive */
+    @media (max-width: 980px) {
+      .product-layout { grid-template-columns: 1fr; }
+      .hero { height: 480px; }
+      .actions { position: relative; top: auto; margin-top: 20px; }
+    }
+
+    @media (max-width: 480px) {
+      .hero { height: 360px; }
+      .page { padding:18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <a class="back" href="index.html">← Back to store</a>
+      <div style="flex:1"></div>
+      <div class="brand">VALENCIRÉ</div>
+    </div>
+
+    <div class="product-layout">
+      <!-- Left: big gallery -->
+      <div>
+        <div class="gallery-wrap">
+          <div class="hero" id="hero">
+            <!-- main image injected by JS -->
+            <img id="heroImg" src="blood noir™.png" alt="Product image">
+          </div>
+
+          <div class="thumbs" id="thumbs">
+            <!-- thumbnails -->
+            <div class="thumb active" data-src="blood noir™.png"><img src="blood noir™.png" alt=""></div>
+            <div class="thumb" data-src="blood noir™.png"><img src="your-image-2.jpg" alt=""></div>
+            <div class="thumb" data-src="blood noir™.png"><img src="your-image-3.jpg" alt=""></div>
+            <div class="thumb" data-src="your-image-4.jpg"><img src="your-image-4.jpg" alt=""></div>
+          </div>
+        </div>
+
+        <!-- product meta below the gallery (small) -->
+        <div style="margin-top:28px;">
+          <div class="label-small">Emboss with initials</div>
+          <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap;">
+            <div style="min-width:220px;">
+              <div style="font-size:18px;font-weight:700">Compression Spider-Man Shirt</div>
+              <div style="color:var(--muted-text); margin-top:6px">High-performance gym compression shirt</div>
+            </div>
+            <div style="margin-left:auto; font-weight:800; font-size:18px">₹799 – ₹899</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: actions -->
+      <aside class="actions">
+        <div class="meta">
+          <span class="label-small">Variation</span>
+          <div class="variation-row">
+            <div class="var-thumb selected" data-src="your-image-1.jpg"><img src="your-image-1.jpg" alt=""></div>
+            <div class="var-thumb" data-src="your-image-2.jpg"><img src="your-image-2.jpg" alt=""></div>
+            <div class="var-thumb" data-src="your-image-3.jpg"><img src="your-image-3.jpg" alt=""></div>
+          </div>
+
+          <div style="margin-top:6px">
+            <div class="label-small">Select size</div>
+            <div class="size-wrap" id="sizes">
+              <button class="size-btn">S</button>
+              <button class="size-btn">M</button>
+              <button class="size-btn selected">L</button>
+              <button class="size-btn">XL</button>
+            </div>
+          </div>
+
+          <div>
+            <button class="add-btn" id="addToCart">🛍️ ADD TO BAG</button>
+            <div class="notes">Estimated complimentary Express delivery or Collect in Store: <strong>Fri, Dec 12 - Mon, Dec 15</strong></div>
+          </div>
+        </div>
+
+        <div class="right-links">
+          <a href="mailto:hello@valencire.com">Contact Us — Our Client Advisors are available to help you.</a>
+          <a href="#">Find in store and book an appointment</a>
+          <a href="#">Shipping & Returns</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    // Simple gallery / thumbnails behavior + size & variation selection + add to cart demo
+    (function(){
+      const hero = document.getElementById('heroImg');
+      const thumbs = document.getElementById('thumbs');
+      const thumbEls = Array.from(document.querySelectorAll('.thumb'));
+      const varThumbs = Array.from(document.querySelectorAll('.var-thumb'));
+      const sizeBtns = Array.from(document.querySelectorAll('.size-btn'));
+      const addBtn = document.getElementById('addToCart');
+
+      // thumbnail click -> change hero
+      thumbs.addEventListener('click', (e)=>{
+        const t = e.target.closest('.thumb');
+        if(!t) return;
+        const src = t.getAttribute('data-src');
+        if(src){
+          hero.style.opacity = 0;
+          setTimeout(()=>{ hero.src = src; hero.style.opacity = 1 }, 120);
+          thumbEls.forEach(x=>x.classList.remove('active'));
+          t.classList.add('active');
+        }
+      });
+
+      // variation thumbs switch main gallery to that image
+      varThumbs.forEach(v=>{
+        v.addEventListener('click', ()=>{
+          const src = v.getAttribute('data-src');
+          if(src){
+            hero.style.opacity = 0;
+            setTimeout(()=>{ hero.src = src; hero.style.opacity = 1 }, 120);
+            varThumbs.forEach(x=>x.classList.remove('selected'));
+            v.classList.add('selected');
+            // highlight matching thumb in thumbs list if present
+            thumbEls.forEach(t=> t.classList.toggle('active', t.getAttribute('data-src') === src));
+          }
+        });
+      });
+
+      // size select
+      sizeBtns.forEach(b=>{
+        b.addEventListener('click', ()=>{
+          sizeBtns.forEach(x=>x.classList.remove('selected'));
+          b.classList.add('selected');
+        });
+      });
+
+      addBtn.addEventListener('click', ()=>{
+        const size = document.querySelector('.size-btn.selected')?.textContent || 'L';
+        alert('Added to bag — ' + size + ' (demo).');
+        // update cart count on main page if present (optional)
+        try{
+          const cc = parent.document.querySelector('.cart-count') || document.querySelector('.cart-count');
+          if(cc){
+            const n = parseInt(cc.textContent||'0')||0; cc.textContent = n+1;
+          }
+        }catch(e){}
+      });
+
+      // load image from query param slug (optional; still static)
+      (function(){
+        const qs = new URLSearchParams(location.search);
+        const slug = qs.get('slug');
+        // Example mapping for future dynamic loading — you can expand this
+        const map = {
+          'compression-spiderman-shirt': 'your-image-1.jpg',
+          'valencire-compression-black': 'your-image-2.jpg',
+          'valencire-performance-grey': 'your-image-3.jpg'
+        };
+        if(slug && map[slug]){
+          hero.src = map[slug];
+          // also set first thumb active
+          thumbEls.forEach(t=> t.classList.toggle('active', t.getAttribute('data-src') === map[slug]));
+        }
+      })();
+    })();
+  </script>
+</body>
+</html>
