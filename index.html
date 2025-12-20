@@ -16,7 +16,6 @@
 body{
   background:#000;
   color:#fff;
-  overflow-x:hidden;
 }
 
 /* ================= HEADER ================= */
@@ -52,16 +51,6 @@ header{
   gap:26px;
 }
 
-.icon{
-  width:18px;
-  height:18px;
-  stroke:#fff;
-  stroke-width:1.6;
-  fill:none;
-  cursor:pointer;
-  opacity:.85;
-}
-
 .menu-text{
   font-size:13px;
   letter-spacing:2px;
@@ -82,10 +71,9 @@ header{
   width:100%;
   height:100%;
   object-fit:cover;
-  filter:brightness(.9) contrast(1.05);
 }
 
-/* ================= SHOP BUTTON ================= */
+/* ================= HERO BUTTON ================= */
 .shop-btn{
   position:absolute;
   bottom:120px;
@@ -101,7 +89,6 @@ header{
   cursor:pointer;
   color:#fff;
   text-decoration:none;
-  z-index:20;
 }
 
 /* ================= SHOP PREVIEW ================= */
@@ -120,11 +107,9 @@ header{
   padding:30px;
   background:linear-gradient(145deg,rgba(255,255,255,0.12),rgba(255,255,255,0.02));
   backdrop-filter:blur(30px);
-  border:1px solid rgba(255,255,255,0.18);
 }
 
 .image-wrap{
-  position:relative;
   border-radius:26px;
   overflow:hidden;
   margin-bottom:28px;
@@ -132,26 +117,15 @@ header{
 
 .image-wrap img{
   width:100%;
-  transition:opacity .5s ease;
 }
-
-.image-wrap .front{
-  position:absolute;
-  inset:0;
-  opacity:0;
-}
-
-.image-wrap:hover .front{ opacity:1; }
-.image-wrap:hover .back{ opacity:0; }
 
 .card h3{
   letter-spacing:2px;
-  margin-bottom:6px;
 }
 
 .card p{
   opacity:.7;
-  margin-bottom:22px;
+  margin-bottom:18px;
 }
 
 .card button{
@@ -160,91 +134,55 @@ header{
   border-radius:999px;
   border:none;
   font-weight:bold;
-  cursor:pointer;
-}
-
-.add-purple{ background:#7b4cff; color:#fff; }
-.add-red{ background:#c61d1d; color:#fff; }
-
-/* ================= FOOTER ================= */
-footer{
-  padding:90px 80px 60px;
-  background:#000;
-  border-top:1px solid rgba(255,255,255,0.12);
-  text-align:center;
-  opacity:.6;
+  background:#7b4cff;
+  color:#fff;
 }
 </style>
 </head>
 
 <body>
 
-<!-- ================= HEADER ================= -->
 <header>
   <div class="logo">
     <img src="LOGO BRO.png" alt="VALENCIRÉ">
   </div>
-
   <div class="header-right">
-    <svg class="icon" viewBox="0 0 24 24">
-      <circle cx="11" cy="11" r="7"></circle>
-      <line x1="16.65" y1="16.65" x2="21" y2="21"></line>
-    </svg>
-
-    <svg class="icon" viewBox="0 0 24 24">
-      <circle cx="12" cy="8" r="4"></circle>
-      <path d="M4 20c2-4 14-4 16 0"></path>
-    </svg>
-
-    <svg class="icon" viewBox="0 0 24 24">
-      <path d="M6 7h12l-1 13H7z"></path>
-      <path d="M9 7V5a3 3 0 0 1 6 0v2"></path>
-    </svg>
-
     <span class="menu-text">MENU</span>
   </div>
 </header>
 
-<!-- ================= HERO ================= -->
 <section class="hero">
   <video autoplay muted loop playsinline>
     <source src="video.mp4" type="video/mp4">
   </video>
 
-  <!-- ✅ SHOP ALWAYS GOES TO LIBRARY -->
-  <a href="libaray.html" class="shop-btn">SHOP</a>
+  <!-- SHOP GOES TO LIBRARY PAGE -->
+  <a href="library.html" class="shop-btn">SHOP</a>
 </section>
 
-<!-- ================= SHOP PREVIEW (STAYS ON MAIN PAGE) ================= -->
 <section class="shop">
   <div class="products">
 
     <div class="card">
       <div class="image-wrap">
-        <img src="BACK 1.png" class="back">
-        <img src="FRONT 1.png" class="front">
+        <img src="FRONT 1.png">
       </div>
       <h3>blood noir™</h3>
       <p>₹1,800</p>
-      <button class="add-purple">Add to Cart</button>
+      <button>Add to Cart</button>
     </div>
 
     <div class="card">
       <div class="image-wrap">
-        <img src="BACK 2.png" class="back">
-        <img src="FRONT 3.png" class="front">
+        <img src="FRONT 3.png">
       </div>
       <h3>blood noir™</h3>
       <p>₹1,800</p>
-      <button class="add-red">Add to Cart</button>
+      <button>Add to Cart</button>
     </div>
 
   </div>
 </section>
-
-<footer>
-  © 2025 VALENCIRÉ® — AIN’T FOR AVERAGE
-</footer>
 
 </body>
 </html>
