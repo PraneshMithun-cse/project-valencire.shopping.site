@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VALENCIRÉ® Official Site</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Helvetica Neue", Arial, sans-serif;
+}
+
+body{
+  background:#000;
+  color:#fff;
+}
+
+/* ================= HEADER ================= */
+header{
+  position:fixed;
+  top:0;
+  width:100%;
+  height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,0.55);
+  backdrop-filter:blur(22px);
+  border-bottom:1px solid rgba(255,255,255,0.12);
+  z-index:5000;
+}
+
+.logo{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+.logo img{
+  height:170px;
+}
+
+/* right icons */
+.header-right{
+  position:absolute;
+  right:40px;
+  display:flex;
+  align-items:center;
+  gap:26px;
+}
+
+.icon{
+  width:18px;
+  height:18px;
+  stroke:#fff;
+  stroke-width:1.6;
+  fill:none;
+  cursor:pointer;
+  opacity:.85;
+}
+
+.icon:hover{ opacity:1; }
+
+.menu-text{
+  font-size:13px;
+  letter-spacing:2px;
+  cursor:pointer;
+  opacity:.85;
+}
+
+.menu-text:hover{ opacity:1; }
+
+/* ================= HERO ================= */
+.hero{
+  width:100vw;
+  height:100vh;
+  position:relative;
+}
+
+.hero video{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:brightness(.9) contrast(1.05);
+}
+
+/* ================= SHOP BUTTON ================= */
+.shop-btn{
+  position:absolute;
+  bottom:120px;
+  left:50%;
+  transform:translateX(-50%);
+  padding:16px 44px;
+  border-radius:999px;
+  background:rgba(255,255,255,0.18);
+  backdrop-filter:blur(25px);
+  border:1px solid rgba(255,255,255,0.35);
+  letter-spacing:3px;
+  font-size:14px;
+  cursor:pointer;
+  color:#fff;
+}
+
+/* ================= SHOP ================= */
+.shop{
+  padding:140px 80px;
+}
+
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
+  gap:60px;
+}
+
+.card{
+  border-radius:34px;
+  padding:30px;
+  background:linear-gradient(145deg,rgba(255,255,255,0.12),rgba(255,255,255,0.02));
+  backdrop-filter:blur(30px);
+  border:1px solid rgba(255,255,255,0.18);
+  transition:.4s ease;
+}
+
+.card:hover{ transform:translateY(-10px); }
+
+.image-wrap{
+  position:relative;
+  border-radius:26px;
+  overflow:hidden;
+  margin-bottom:28px;
+}
+
+.image-wrap img{
+  width:100%;
+  transition:opacity .5s ease;
+}
+
+.image-wrap .front{
+  position:absolute;
+  inset:0;
+  opacity:0;
+}
+
+.image-wrap:hover .front{ opacity:1; }
+.image-wrap:hover .back{ opacity:0; }
+
+.card h3{
+  letter-spacing:2px;
+  margin-bottom:6px;
+}
+
+.card p{
+  opacity:.7;
+  margin-bottom:22px;
+}
+
+.card button{
+  width:100%;
+  padding:18px;
+  border-radius:999px;
+  border:none;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.add-purple{ background:#7b4cff; color:#fff; }
+.add-red{ background:#c61d1d; color:#fff; }
+
+/* ================= NEWSLETTER ================= */
+.newsletter{
+  padding:160px 80px 120px;
+  text-align:center;
+  background:linear-gradient(to bottom,rgba(255,255,255,0.04),#000);
+  border-top:1px solid rgba(255,255,255,0.12);
+}
+
+.newsletter h2{
+  font-size:28px;
+  letter-spacing:4px;
+  margin-bottom:18px;
+}
+
+.newsletter p{
+  opacity:.7;
+  max-width:520px;
+  margin:0 auto 40px;
+  line-height:1.6;
+}
+
+.newsletter-form{
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+.newsletter input{
+  padding:18px 22px;
+  min-width:280px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.25);
+  border-radius:999px;
+  color:#fff;
+  outline:none;
+}
+
+.newsletter input::placeholder{
+  color:rgba(255,255,255,0.6);
+}
+
+.newsletter button{
+  padding:18px 38px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.35);
+  background:rgba(255,255,255,0.18);
+  backdrop-filter:blur(20px);
+  letter-spacing:2px;
+  color:#fff;
+  cursor:pointer;
+}
+
+.newsletter button:hover{
+  background:rgba(255,255,255,0.25);
+}
+
+/* ================= FOOTER ================= */
+footer{
+  padding:90px 80px 60px;
+  background:#000;
+  border-top:1px solid rgba(255,255,255,0.12);
+}
+
+.footer-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:60px;
+}
+
+.footer-col h4{
+  letter-spacing:3px;
+  margin-bottom:20px;
+  font-size:14px;
+}
+
+.footer-col a{
+  display:block;
+  text-decoration:none;
+  color:#fff;
+  opacity:.7;
+  margin-bottom:14px;
+  font-size:13px;
+}
+
+.footer-col a:hover{ opacity:1; }
+
+.footer-bottom{
+  margin-top:70px;
+  text-align:center;
+  font-size:12px;
+  opacity:.6;
+  letter-spacing:2px;
+}
+
+/* ================= MENU PANEL ================= */
+.menu-panel{
+  position:fixed;
+  top:0;
+  right:-420px;
+  width:400px;
+  height:100vh;
+  background:rgba(0,0,0,0.85);
+  backdrop-filter:blur(30px);
+  padding:40px;
+  transition:.45s ease;
+  z-index:6000;
+}
+
+.menu-panel.active{ right:0; }
+
+.menu-panel h2{
+  letter-spacing:3px;
+  margin-bottom:30px;
+}
+
+.menu-item{
+  font-size:16px;
+  letter-spacing:2px;
+  margin-bottom:18px;
+  cursor:pointer;
+  opacity:.85;
+}
+
+.menu-item:hover{ opacity:1; }
+
+.close-btn{
+  position:absolute;
+  top:20px;
+  right:20px;
+  font-size:20px;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+<header>
+  <div class="logo">
+    <img src="LOGO BRO.png" alt="VALENCIRÉ">
+  </div>
+
+  <div class="header-right">
+    <svg class="icon" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="7"></circle>
+      <line x1="16.65" y1="16.65" x2="21" y2="21"></line>
+    </svg>
+
+    <svg class="icon" viewBox="0 0 24 24">
+      <circle cx="12" cy="8" r="4"></circle>
+      <path d="M4 20c2-4 14-4 16 0"></path>
+    </svg>
+
+    <svg class="icon" viewBox="0 0 24 24">
+      <path d="M6 7h12l-1 13H7z"></path>
+      <path d="M9 7V5a3 3 0 0 1 6 0v2"></path>
+    </svg>
+
+    <span class="menu-text" onclick="openMenu()">MENU</span>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <video autoplay muted loop playsinline>
+    <source src="video.mp4" type="video/mp4">
+  </video>
+
+  <button class="shop-btn"
+    onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">
+    SHOP
+  </button>
+</section>
+
+<!-- ================= SHOP ================= -->
+<section class="shop" id="shop">
+  <div class="products">
+
+    <div class="card">
+      <div class="image-wrap">
+        <img src="BACK 1.png" class="back">
+        <img src="FRONT 1.png" class="front">
+      </div>
+      <h3>blood noir™</h3>
+      <p>₹1,800</p>
+      <button class="add-purple">Add to Cart</button>
+    </div>
+
+    <div class="card">
+      <div class="image-wrap">
+        <img src="BACK 2.png" class="back">
+        <img src="FRONT 3.png" class="front">
+      </div>
+      <h3>blood noir™</h3>
+      <p>₹1,800</p>
+      <button class="add-red">Add to Cart</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= NEWSLETTER ================= -->
+<section class="newsletter">
+  <h2>STAY CLOSE</h2>
+  <p>Be the first to access limited drops, private releases, and members-only pricing.</p>
+  <form class="newsletter-form">
+    <input type="email" placeholder="Enter your email" required>
+    <button type="submit">JOIN</button>
+  </form>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="footer-grid">
+
+    <div class="footer-col">
+      <h4>VALENCIRÉ®</h4>
+      <a href="#">About</a>
+      <a href="#">Craftsmanship</a>
+      <a href="#">Journal</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>SHOP</h4>
+      <a href="#">Compression</a>
+      <a href="#">Oversized</a>
+      <a href="#">Limited Drops</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>SUPPORT</h4>
+      <a href="#">Contact</a>
+      <a href="#">Shipping</a>
+      <a href="#">Returns</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>FOLLOW</h4>
+      <a href="#">Instagram</a>
+      <a href="#">X (Twitter)</a>
+      <a href="#">YouTube</a>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © 2025 VALENCIRÉ® — AIN’T FOR AVERAGE
+  </div>
+</footer>
+
+<!-- ================= MENU PANEL ================= -->
+<div class="menu-panel" id="menuPanel">
+  <span class="close-btn" onclick="closeMenu()">✕</span>
+  <h2>MENU</h2>
+  <div class="menu-item">Compression T-Shirts</div>
+  <div class="menu-item">Oversized T-Shirts</div>
+</div>
+
+<script>
+function openMenu(){
+  document.getElementById("menuPanel").classList.add("active");
+}
+function closeMenu(){
+  document.getElementById("menuPanel").classList.remove("active");
+}
+</script>
+
+</body>
+</html>
