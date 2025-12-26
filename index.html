@@ -907,15 +907,35 @@
 }
 
 .add-to-cart-btn {
-    width: 100%;
-    padding: 18px;
-    border-radius: 999px;
-    border: none;
-    background: #7f5cff;
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
+  width: 100%;
+  padding: 18px;
+  border-radius: 999px;
+  border: none;
+  background: var(--btn-color, #7f5cff);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+.add-to-cart-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--btn-color) 60%, transparent);
+}
+
+/* Button themes */
+.product-card[data-theme="purple"] {
+  --btn-color: #7f5cff;
+}
+
+.product-card[data-theme="red"] {
+  --btn-color: #c41e3a;
+}
+
+.product-card[data-theme="blue"] {
+  --btn-color: #2563eb;
+}
+
 
     </style>
 </head>
@@ -1092,6 +1112,7 @@
                 price: 1800,
                 category: "compression",
                 images: { back: "BACK 1.png", front: "FRONT 1.png" },
+                theme: "purple",
                 desc: "Premium compression fit with moisture-wicking technology",
                 new: true
             },
@@ -1100,6 +1121,7 @@
                 name: "blood noir™",
                 price: 1800,
                 category: "compression",
+                theme: "red",
                 images: { back: "BACK 2.png", front: "FRONT 3.png" },
                 desc: "Engineered for performance and style",
                 new: true
@@ -1109,9 +1131,10 @@
                 name: "phantom pro™",
                 price: 1950,
                 category: "compression",
+                theme: "blue",
                 images: { back: "valencire blue back .png", front: "valencire blue final out .png" },
                 desc: "Athletic compression with 4-way stretch",
-                new: false
+                new: true
             }
         ];
 
@@ -1140,7 +1163,8 @@
                 card.style.animationDelay = `${index * 0.1}s`;
 
                 card.innerHTML = `
-      <div class="product-card" onclick="viewProduct(${product.id})">
+      <div class="product-card" data-theme="${product.theme}" onclick="viewProduct(${product.id})">
+
 
     <div class="product-image">
         <img src="${product.images.back}" alt="${product.name}">
