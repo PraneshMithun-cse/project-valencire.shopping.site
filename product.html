@@ -904,6 +904,28 @@ button,
 .product-images {
   height: 100%;
 }
+.product-header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 80px;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  z-index: 999;
+}
+
+.cart-icon {
+  cursor: pointer;
+  opacity: 0.85;
+  transition: 0.3s ease;
+}
+
+.cart-icon:hover {
+  opacity: 1;
+  transform: scale(1.08);
+}
+
 
 
 
@@ -911,6 +933,15 @@ button,
 </head>
 
 <body>
+<header class="product-header">
+  <div class="cart-icon" onclick="goToCart()">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="white" stroke-width="1.5">
+      <path d="M6 7h12l-1 13H7z"></path>
+      <path d="M9 7V5a3 3 0 0 1 6 0v2"></path>
+    </svg>
+  </div>
+</header>
+
 
 <!-- ================= HEADER ================= -->
 <header>
@@ -1126,7 +1157,8 @@ const products = [
 let currentProductIndex = 0;
 let selectedSize = 'M';
 let quantity = 1;
-let cart = [];
+let cart = JSON.parse(localStorage.getItem("valencire_cart")) || [];
+
 
 // Initialize
 window.onload = () => {
@@ -1319,12 +1351,9 @@ function buyNow() {
 }
 
 function viewCart() {
-  if (cart.length === 0) {
-    showNotification('Your cart is empty');
-  } else {
-    showNotification(`You have ${cart.reduce((sum, item) => sum + item.quantity, 0)} items in cart`);
-  }
+  window.location.href = "cart.html";
 }
+
 
 function updateCartCount() {
   const count = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -1363,6 +1392,10 @@ function showNotification(message) {
 // Scroll Function
 function scrollToSection(id) {
   document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+
+function goToCart() {
+  window.location.href = "cart.html";
+}
 }
 </script>
 
