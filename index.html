@@ -1317,7 +1317,7 @@
                 card.className = 'card';
                 card.innerHTML = `
                     <div class="product-card" data-theme="${p.theme}">
-                        <div class="product-image" style="cursor:pointer;">
+                        <div class="product-image" onclick="viewProduct(${p.id})" style="cursor:pointer;">
                             <img src="${p.images.back}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/320x400/0a0a0a/7f5cff?text=${encodeURIComponent(p.name)}'">
                         </div>
                         <div class="product-name">${p.name}</div>
@@ -1327,6 +1327,19 @@
                 `;
                 container.appendChild(card);
             });
+        }
+
+        function viewProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const slug = product.name
+                .toLowerCase()
+                .replace(/™/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/[^a-z0-9-]/g, '');
+
+            window.location.href = `product.html?product=${slug}`;
         }
 
         function addToCart(productId) {
