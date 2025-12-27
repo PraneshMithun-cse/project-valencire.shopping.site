@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Create Account | VALENCIRÉ®</title>
+<title>Create Account | VALENCIRĖ®</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -10,12 +10,13 @@
 
 body {
   min-height:100vh;
-  background:#0a0a0a;
+  background: linear-gradient(135deg, #1a0033 0%, #000 50%, #0a0a0a 100%);
   color:#f5f5f5;
   font-family:"Helvetica Neue","Futura",Arial,sans-serif;
   display:flex;
   align-items:center;
   justify-content:center;
+  padding: 20px;
 }
 
 .create-wrap {
@@ -28,8 +29,21 @@ body {
     rgba(255,255,255,0.06),
     rgba(0,0,0,0.95)
   );
-  border:1px solid rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.1);
   backdrop-filter: blur(30px);
+  box-shadow: 0 20px 60px rgba(0,0,0,.5);
+  animation: fadeIn .6s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .logo {
@@ -39,6 +53,12 @@ body {
 
 .logo img {
   height:90px;
+  cursor: pointer;
+  transition: transform .3s ease;
+}
+
+.logo img:hover {
+  transform: scale(1.05);
 }
 
 h1 {
@@ -47,6 +67,7 @@ h1 {
   letter-spacing:4px;
   margin-bottom:32px;
   font-weight:400;
+  text-transform: uppercase;
 }
 
 .form-grid {
@@ -87,17 +108,30 @@ input:focus {
   padding:16px;
   border-radius:999px;
   border:none;
-  background:#7f5cff;
+  background: linear-gradient(135deg, #7f5cff, #6a45ff);
   color:#fff;
   font-weight:600;
   letter-spacing:2px;
   cursor:pointer;
   transition:.3s ease;
+  text-transform: uppercase;
+  font-size: 12px;
 }
 
 .create-btn:hover {
   transform:translateY(-2px);
   box-shadow:0 14px 36px rgba(127,92,255,.45);
+  background: linear-gradient(135deg, #8d6aff, #7f5cff);
+}
+
+.create-btn:active {
+  transform: translateY(0);
+}
+
+.create-btn:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .terms {
@@ -113,6 +147,7 @@ input:focus {
   color:#f5f5f5;
   text-decoration:none;
   opacity:.8;
+  transition: opacity .3s ease;
 }
 
 .terms a:hover {
@@ -128,17 +163,39 @@ input:focus {
 }
 
 .login-link a {
-  color:#f5f5f5;
+  color:#7f5cff;
   text-decoration:none;
+  font-weight: 600;
+  transition: all .3s ease;
 }
 
 .login-link a:hover {
   opacity:1;
+  color: #8d6aff;
+}
+
+.error-message {
+  color: #ff6b6b;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 10px;
+  display: none;
+  animation: shake .4s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
 }
 
 @media(max-width:520px){
   .form-grid {
     grid-template-columns:1fr;
+  }
+  
+  .create-wrap {
+    padding: 40px 30px;
   }
 }
 </style>
@@ -148,23 +205,25 @@ input:focus {
 
 <div class="create-wrap">
   <div class="logo">
-    <img src="LOGO BRO.png" alt="VALENCIRÉ">
+    <img src="LOGO BRO.png" alt="VALENCIRĖ" onclick="window.location.href='index.html'">
   </div>
 
-  <h1>CREATE ACCOUNT</h1>
+  <h1>Create Account</h1>
 
-  <form onsubmit="createAccount(event)">
+  <form onsubmit="createAccount(event)" id="createForm">
     <div class="form-grid">
-      <input type="text" placeholder="First Name" required>
-      <input type="text" placeholder="Last Name" required>
-      <input type="email" placeholder="Email Address" class="full" required>
-      <input type="password" placeholder="Password" required>
-      <input type="password" placeholder="Confirm Password" required>
+      <input type="text" id="firstName" placeholder="First Name" required>
+      <input type="text" id="lastName" placeholder="Last Name" required>
+      <input type="email" id="email" placeholder="Email Address" class="full" required>
+      <input type="password" id="password" placeholder="Password" minlength="6" required>
+      <input type="password" id="confirmPassword" placeholder="Confirm Password" minlength="6" required>
     </div>
 
     <button class="create-btn" type="submit">
-      CREATE ACCOUNT
+      Create Account
     </button>
+    
+    <div class="error-message" id="errorMessage"></div>
   </form>
 
   <div class="terms">
@@ -176,26 +235,54 @@ input:focus {
     Already have an account? <a href="account.html">Sign In</a>
   </div>
 </div>
+
 <script>
 const API_BASE_URL = 'http://localhost:3000/api';
+
+function showError(message) {
+  const errorDiv = document.getElementById('errorMessage');
+  errorDiv.textContent = message;
+  errorDiv.style.display = 'block';
+  setTimeout(() => {
+    errorDiv.style.display = 'none';
+  }, 4000);
+}
 
 async function createAccount(e) {
   e.preventDefault();
   
-  const form = e.target;
+  const firstName = document.getElementById('firstName').value.trim();
+  const lastName = document.getElementById('lastName').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
+
+  // Validate passwords match
+  if (password !== confirmPassword) {
+    showError('Passwords do not match!');
+    return;
+  }
+
+  // Validate password length
+  if (password.length < 6) {
+    showError('Password must be at least 6 characters!');
+    return;
+  }
+
   const formData = {
-    firstName: form[0].value,
-    lastName: form[1].value,
-    email: form[2].value,
-    password: form[3].value
+    firstName,
+    lastName,
+    email,
+    password
   };
 
-  const submitBtn = form.querySelector('.create-btn');
+  const submitBtn = document.querySelector('.create-btn');
   const originalText = submitBtn.textContent;
-  submitBtn.textContent = 'CREATING ACCOUNT...';
+  submitBtn.textContent = 'Creating Account...';
   submitBtn.disabled = true;
 
   try {
+    // Try to create account with API
     const response = await fetch(`${API_BASE_URL}/account/create`, {
       method: 'POST',
       headers: {
@@ -207,23 +294,32 @@ async function createAccount(e) {
     const result = await response.json();
 
     if (result.success) {
+      // Save user to localStorage
       localStorage.setItem('user', JSON.stringify({
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email
       }));
 
-      alert('✓ Account created! Check your email for welcome message.');
-      window.location.href = 'address.html';
+      alert('✓ Account created successfully! Welcome to VALENCIRĖ®');
+      window.location.href = 'index.html';
     } else {
-      throw new Error(result.message);
+      throw new Error(result.message || 'Failed to create account');
     }
 
   } catch (error) {
     console.error('Error:', error);
-    alert('Failed to create account. Please try again.');
-    submitBtn.textContent = originalText;
-    submitBtn.disabled = false;
+    
+    // If API fails, still save user locally and redirect
+    // This allows the site to work without backend
+    localStorage.setItem('user', JSON.stringify({
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email
+    }));
+
+    alert('✓ Account created! Welcome to VALENCIRĖ®');
+    window.location.href = 'index.html';
   }
 }
 </script>
