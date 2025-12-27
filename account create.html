@@ -176,12 +176,55 @@ input:focus {
     Already have an account? <a href="account.html">Sign In</a>
   </div>
 </div>
-
 <script>
-function createAccount(e){
+const API_BASE_URL = 'http://localhost:3000/api';
+
+async function createAccount(e) {
   e.preventDefault();
-  // demo flow
-  window.location.href = "address.html";
+  
+  const form = e.target;
+  const formData = {
+    firstName: form[0].value,
+    lastName: form[1].value,
+    email: form[2].value,
+    password: form[3].value
+  };
+
+  const submitBtn = form.querySelector('.create-btn');
+  const originalText = submitBtn.textContent;
+  submitBtn.textContent = 'CREATING ACCOUNT...';
+  submitBtn.disabled = true;
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/account/create`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      localStorage.setItem('user', JSON.stringify({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email
+      }));
+
+      alert('✓ Account created! Check your email for welcome message.');
+      window.location.href = 'address.html';
+    } else {
+      throw new Error(result.message);
+    }
+
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Failed to create account. Please try again.');
+    submitBtn.textContent = originalText;
+    submitBtn.disabled = false;
+  }
 }
 </script>
 
