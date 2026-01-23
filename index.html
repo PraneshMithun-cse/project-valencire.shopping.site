@@ -2,30 +2,1367 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>VALENCIRÉ® | Luxury Commerce</title>
+    <meta charset="UTF-8">
+    <title>VALENCIRÈ® Official Site</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        border: "hsl(var(--border))",
-                        input: "hsl(var(--input))",
-                        ring: "hsl(var(--ring))",
-                        background: "hsl(var(--background))",
-                        foreground: "hsl(var(--foreground))",
-                    }
-                }
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #f5f5f5;
+            font-family: "Helvetica Neue", "Futura", Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 60px;
+            background: rgba(10, 10, 10, 0.65);
+            backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(245, 245, 245, 0.08);
+            z-index: 5000;
+            transition: all .4s ease;
+        }
+
+        .logo {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .logo img {
+            height: 160px;
+            cursor: pointer;
+            filter: brightness(1.1);
+        }
+
+        .header-left {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-size: 12px;
+            letter-spacing: 2.5px;
+            cursor: pointer;
+            opacity: .75;
+            transition: .3s ease;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            opacity: 1;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .icon-wrapper {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            stroke: #f5f5f5;
+            stroke-width: 1.5;
+            fill: none;
+            opacity: .8;
+            transition: .3s ease;
+        }
+
+        .icon:hover {
+            opacity: 1;
+            transform: scale(1.08);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: #c41e3a;
+            color: #fff;
+            font-size: 10px;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-count.active {
+            display: flex;
+        }
+
+        /* HERO */
+        .hero {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(.75);
+        }
+
+        /* SHOP */
+        .shop {
+            padding: 120px 80px;
+            min-height: 100vh;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            letter-spacing: 8px;
+            margin-bottom: 80px;
+            font-weight: 300;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 50px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .card {
+            cursor: pointer;
+            transition: .5s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-12px);
+        }
+
+        .product-card {
+            background: radial-gradient(ellipse at top, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.95));
+            border-radius: 26px;
+            padding: 26px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .product-image {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 28px;
+        }
+
+        .product-image img {
+            width: 90%;
+            max-width: 320px;
+            filter: drop-shadow(0 40px 60px rgba(0, 0, 0, 0.9));
+        }
+
+        .product-name {
+            font-size: 15px;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+
+        .product-price {
+            opacity: .7;
+            margin-bottom: 20px;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 18px;
+            border-radius: 999px;
+            border: none;
+            background: var(--btn-color, #7f5cff);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .3s ease;
+        }
+
+        .add-to-cart-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .product-card[data-theme="purple"] {
+            --btn-color: #7f5cff;
+        }
+
+        .product-card[data-theme="red"] {
+            --btn-color: #c41e3a;
+        }
+
+        .product-card[data-theme="blue"] {
+            --btn-color: #2563eb;
+        }
+
+        /* CART PANEL */
+        .cart-panel {
+            position: fixed;
+            top: 0;
+            right: -500px;
+            width: 480px;
+            height: 100vh;
+            background: rgba(15, 15, 15, 0.98);
+            backdrop-filter: blur(40px);
+            padding: 40px;
+            transition: .5s ease;
+            z-index: 6000;
+            border-left: 1px solid rgba(245, 245, 245, 0.1);
+            overflow-y: auto;
+        }
+
+        .cart-panel.active {
+            right: 0;
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 60px 20px;
+            opacity: .5;
+            font-size: 13px;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            padding: 20px 30px;
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(245, 245, 245, 0.2);
+            border-radius: 8px;
+            font-size: 13px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: .4s ease;
+            z-index: 8000;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .panel-header {
+            padding-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(245, 245, 245, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .panel-header h2 {
+            font-size: 20px;
+            letter-spacing: 4px;
+            font-weight: 400;
+            text-transform: uppercase;
+        }
+
+        .close-btn {
+            font-size: 24px;
+            cursor: pointer;
+            opacity: .7;
+            transition: .3s ease;
+        }
+
+        .close-btn:hover {
+            opacity: 1;
+            transform: rotate(90deg);
+        }
+
+        /* NEWSLETTER */
+        .newsletter {
+            padding: 140px 80px;
+            text-align: center;
+            background: linear-gradient(to bottom, rgba(245, 245, 245, 0.02), #0a0a0a);
+            border-top: 1px solid rgba(245, 245, 245, 0.08);
+        }
+
+        .newsletter h2 {
+            font-size: 32px;
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .newsletter p {
+            opacity: .6;
+            max-width: 560px;
+            margin: 0 auto 50px;
+            line-height: 1.8;
+            font-size: 14px;
+            font-weight: 300;
+        }
+
+        .newsletter-form {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .newsletter input {
+            padding: 18px 28px;
+            min-width: 320px;
+            background: rgba(245, 245, 245, 0.05);
+            border: 1px solid rgba(245, 245, 245, 0.2);
+            border-radius: 999px;
+            color: #f5f5f5;
+            outline: none;
+            font-size: 13px;
+            letter-spacing: 1px;
+            transition: .3s ease;
+        }
+
+        .newsletter input:focus {
+            border-color: rgba(245, 245, 245, 0.5);
+            background: rgba(245, 245, 245, 0.08);
+        }
+
+        .newsletter input::placeholder {
+            color: rgba(245, 245, 245, 0.4);
+            letter-spacing: 2px;
+        }
+
+        .newsletter button {
+            padding: 18px 44px;
+            border-radius: 999px;
+            border: 1.5px solid rgba(245, 245, 245, 0.35);
+            background: transparent;
+            letter-spacing: 3px;
+            color: #f5f5f5;
+            cursor: pointer;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 500;
+            transition: .4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .newsletter button::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: #f5f5f5;
+            transform: translateX(-100%);
+            transition: .4s ease;
+            z-index: -1;
+        }
+
+        .newsletter button:hover {
+            color: #0a0a0a;
+            border-color: #f5f5f5;
+        }
+
+        .newsletter button:hover::before {
+            transform: translateX(0);
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 100px 80px 50px;
+            background: #0a0a0a;
+            border-top: 1px solid rgba(245, 245, 245, 0.08);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 60px;
+            max-width: 1400px;
+            margin: 0 auto 60px;
+        }
+
+        .footer-col h4 {
+            letter-spacing: 3px;
+            margin-bottom: 24px;
+            font-size: 12px;
+            font-weight: 500;
+            opacity: .9;
+        }
+
+        .footer-col a {
+            display: block;
+            text-decoration: none;
+            color: #f5f5f5;
+            opacity: .5;
+            margin-bottom: 16px;
+            font-size: 13px;
+            transition: .3s ease;
+            letter-spacing: 1px;
+            font-weight: 300;
+        }
+
+        .footer-col a:hover {
+            opacity: 1;
+            padding-left: 4px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            font-size: 11px;
+            opacity: .4;
+            letter-spacing: 2px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(245, 245, 245, 0.05);
+            font-weight: 300;
+        }
+
+        #auth-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: none;
+        }
+
+        #auth-modal.active {
+            display: block;
+        }
+
+        @media(max-width:768px) {
+            .cart-panel {
+                width: 100%;
+                right: -100%;
+            }
+
+            .products {
+                grid-template-columns: 1fr;
             }
         }
-    </script>
+    </style>
 </head>
 
 <body>
-    <div id="root"></div>
-    <script type="module" src="/main.jsx"></script>
+
+    <!-- AUTH MODAL CONTAINER -->
+    <div id="auth-modal"></div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-left">
+            <div class="nav-link" onclick="scrollToShop()">Collection</div>
+        </div>
+
+        <div class="logo">
+            <img src="assets/images/LOGO BRO.png" alt="VALENCIRÈ" onerror="this.style.display='none'">
+        </div>
+
+        <div class="header-right">
+            <svg class="icon" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="16.65" y1="16.65" x2="21" y2="21"></line>
+            </svg>
+
+            <div class="icon-wrapper" onclick="redirectToAuth()">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <circle cx="12" cy="8" r="4"></circle>
+                    <path d="M4 20c2-4 14-4 16 0"></path>
+                </svg>
+            </div>
+
+            <div class="icon-wrapper" onclick="toggleCart()">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M6 7h12l-1 13H7z"></path>
+                    <path d="M9 7V5a3 3 0 0 1 6 0v2"></path>
+                </svg>
+                <div class="cart-count" id="cartCount">0</div>
+            </div>
+
+            <span class="nav-link">MENU</span>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <video autoplay muted loop playsinline>
+            <source src="assets/videos/video.mp4" type="video/mp4">
+        </video>
+    </section>
+
+    <!-- SHOP -->
+    <section class="shop" id="shop">
+        <h2 class="section-title">COLLECTION</h2>
+        <div class="products" id="products"></div>
+    </section>
+
+    <!-- CART PANEL -->
+    <div class="cart-panel" id="cartPanel">
+        <div class="panel-header">
+            <h2>YOUR CART</h2>
+            <span class="close-btn" onclick="toggleCart()">✕</span>
+        </div>
+        <div class="cart-empty">Your cart is empty</div>
+    </div>
+
+    <!-- NEWSLETTER -->
+    <section class="newsletter">
+        <h2>EXCLUSIVE ACCESS</h2>
+        <p>Join our community for early access to limited editions, exclusive drops, and member-only benefits.</p>
+        <form class="newsletter-form" onsubmit="subscribe(event)">
+            <input type="email" placeholder="YOUR EMAIL ADDRESS" required>
+            <button type="submit">SUBSCRIBE</button>
+        </form>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>VALENCIRÈ®</h4>
+                <a href="about.html">About Us</a>
+                <a href="#">Craftsmanship</a>
+                <a href="#">Journal</a>
+                <a href="#">Careers</a>
+            </div>
+
+            <div class="footer-col">
+                <h4>SHOP</h4>
+                <a href="#">Compression Collection</a>
+                <a href="#">Oversized Collection</a>
+                <a href="#">Limited Editions</a>
+                <a href="#">New Arrivals</a>
+            </div>
+
+            <div class="footer-col">
+                <h4>SUPPORT</h4>
+                <a href="#">Contact Us</a>
+                <a href="#">Shipping Information</a>
+                <a href="#">Returns & Exchanges</a>
+                <a href="#">Size Guide</a>
+            </div>
+
+            <div class="footer-col">
+                <h4>FOLLOW</h4>
+                <a href="#">Instagram</a>
+                <a href="#">X (Twitter)</a>
+                <a href="#">YouTube</a>
+                <a href="#">TikTok</a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            © 2025 VALENCIRÈ® – CRAFTED FOR THE EXTRAORDINARY
+        </div>
+    </footer>
+
+    <!-- NOTIFICATION -->
+    <div class="notification" id="notification"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Lucide Icons as React Components
+        const User = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="4" /><path d="M4 20c2-4 14-4 16 0" /></svg>;
+        const Package = (props) => <svg width={props.size || 24} height={props.size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /><polyline points="3.27 6.96 12 12.01 20.73 6.96" /><line x1="12" y1="22.08" x2="12" y2="12" /></svg>;
+        const Activity = (props) => <svg width={props.size || 24} height={props.size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>;
+        const Clock = (props) => <svg width={props.size || 24} height={props.size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>;
+        const MapPin = (props) => <svg width={props.size || 24} height={props.size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>;
+        const LogOut = (props) => <svg width={props.size || 16} height={props.size || 16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>;
+        const Eye = (props) => <svg width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>;
+        const EyeOff = (props) => <svg width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" /></svg>;
+
+        const IconUser = (props) => <svg width={props.size || 24} height={props.size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>;
+        const IconMail = (props) => <svg width={props.size || 24} height={props.size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>;
+        const IconLock = (props) => <svg width={props.size || 24} height={props.size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>;
+
+        // Input Field Component (Defined outside to prevent re-renders)
+        const InputField = ({ type, placeholder, value, onChange, icon: Icon }) => (
+            <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <Icon className="text-gray-500 group-focus-within:text-white transition-colors duration-300" size={18} />
+                </div>
+                <input
+                    type={type}
+                    className="w-full bg-white/5 border border-white/10 text-white pl-12 pr-4 py-4 rounded-full focus:outline-none focus:border-white/30 focus:bg-white/10 transition-all duration-300 placeholder-gray-600 font-light"
+                    placeholder={placeholder}
+                    value={value}
+                    onChange={onChange}
+                    required
+                />
+            </div>
+        );
+
+        const ValencireAuthSystem = ({ onClose, initialView = 'landing' }) => {
+            const API_BASE = 'http://localhost:3000';
+            const [view, setView] = useState(initialView);
+            const [currentUser, setCurrentUser] = useState(null);
+
+            // Forms
+            const [formData, setFormData] = useState({
+                firstName: '',
+                lastName: '',
+                email: '',
+                password: '',
+                confirmPassword: ''
+            });
+            const [resetPassword, setResetPassword] = useState('');
+            const [resetConfirmPassword, setResetConfirmPassword] = useState('');
+
+            // UI State
+            const [showPassword, setShowPassword] = useState(false);
+            const [error, setError] = useState('');
+            const [successMsg, setSuccessMsg] = useState('');
+            const [isLoading, setIsLoading] = useState(false);
+
+            useEffect(() => {
+                // Check for Reset Token in URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const resetToken = urlParams.get('resetToken');
+                if (resetToken) {
+                    setView('reset-password');
+                }
+
+                // Check for Session
+                const token = localStorage.getItem('valencire_token');
+                if (token && !resetToken) {
+                    fetch(`${API_BASE}/api/auth/me`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                setCurrentUser(data.user);
+                                setView('dashboard');
+                            } else {
+                                localStorage.removeItem('valencire_token');
+                            }
+                        })
+                        .catch(() => localStorage.removeItem('valencire_token'));
+                }
+            }, []);
+
+            // --- HANDLERS ---
+
+            const handleSignup = async (e) => {
+                e.preventDefault();
+                setError('');
+                setSuccessMsg('');
+
+                if (formData.password !== formData.confirmPassword) {
+                    setError('Passwords do not match!');
+                    return;
+                }
+                if (formData.password.length < 6) {
+                    setError('Password must be at least 6 characters!');
+                    return;
+                }
+
+                setIsLoading(true);
+                try {
+                    const res = await fetch(`${API_BASE}/api/auth/signup`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            firstName: formData.firstName,
+                            lastName: formData.lastName,
+                            email: formData.email,
+                            password: formData.password
+                        })
+                    });
+                    const data = await res.json();
+
+                    if (data.success) {
+                        localStorage.setItem('valencire_token', data.token);
+                        setCurrentUser(data.user);
+                        setView('signup-success');
+                        setFormData({ firstName: '', lastName: '', email: '', password: '', confirmPassword: '' });
+                    } else {
+                        setError(data.message || 'Signup failed');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    setError('Connection error. Ensure server is running.');
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+
+            const handleSignin = async (e) => {
+                e.preventDefault();
+                setError('');
+                setIsLoading(true);
+
+                try {
+                    const res = await fetch(`${API_BASE}/api/auth/login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            email: formData.email,
+                            password: formData.password
+                        })
+                    });
+                    const data = await res.json();
+
+                    if (data.success) {
+                        localStorage.setItem('valencire_token', data.token);
+                        setCurrentUser(data.user);
+                        setView('dashboard');
+                        setFormData({ firstName: '', lastName: '', email: '', password: '', confirmPassword: '' });
+                    } else {
+                        setError(data.message || 'Invalid credentials');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    setError('Connection error. Ensure server is running.');
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+
+            const handleForgotPassword = async (e) => {
+                e.preventDefault();
+                setError('');
+                setSuccessMsg('');
+                setIsLoading(true);
+
+                try {
+                    const res = await fetch(`${API_BASE}/api/auth/forgot-password`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: formData.email })
+                    });
+                    const data = await res.json();
+                    setSuccessMsg(data.message);
+                } catch (err) {
+                    setError('Failed to send request.');
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+
+            const handleResetPassword = async (e) => {
+                e.preventDefault();
+                setError('');
+                setSuccessMsg('');
+
+                if (resetPassword !== resetConfirmPassword) {
+                    setError('Passwords do not match.');
+                    return;
+                }
+
+                setIsLoading(true);
+                const urlParams = new URLSearchParams(window.location.search);
+                const token = urlParams.get('resetToken');
+
+                try {
+                    const res = await fetch(`${API_BASE}/api/auth/reset-password`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ token, newPassword: resetPassword })
+                    });
+                    const data = await res.json();
+
+                    if (data.success) {
+                        setSuccessMsg('Password reset successfully! Please login.');
+                        setTimeout(() => {
+                            window.history.replaceState({}, document.title, window.location.pathname);
+                            setView('signin');
+                        }, 2000);
+                    } else {
+                        setError(data.message);
+                    }
+                } catch (err) {
+                    setError('Failed to reset password.');
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+
+            const handleLogout = () => {
+                localStorage.removeItem('valencire_token');
+                setCurrentUser(null);
+                setView('landing');
+                if (onClose) onClose();
+            };
+
+            // --- RENDER HELPERS ---
+
+
+            // --- VIEWS ---
+
+            // Loading Overlay
+            if (isLoading) {
+                return (
+                    <div className="fixed inset-0 z-[10000] bg-black/90 backdrop-blur-md flex items-center justify-center text-white">
+                        <div className="text-center">
+                            <div className="w-12 h-12 border-2 border-white/10 border-t-white rounded-full animate-spin mb-6 mx-auto"></div>
+                            <div className="text-xs tracking-[0.3em] font-light">PROCESSING REQUEST</div>
+                        </div>
+                    </div>
+                );
+            }
+
+            // LANDING
+            if (view === 'landing') {
+                return (
+                    <div className="min-h-screen bg-black text-white flex items-center justify-center p-6 font-['Helvetica_Neue']">
+                        <div className="max-w-md w-full text-center space-y-8">
+                            <div className="mb-12 cursor-pointer hover:opacity-80 transition-opacity" onClick={onClose}>
+                                <h1 className="text-3xl font-light tracking-[0.3em]">VALENCIRÉ®</h1>
+                            </div>
+
+                            <div className="space-y-4">
+                                <button
+                                    onClick={() => setView('signin')}
+                                    className="w-full py-4 bg-white text-black font-medium tracking-widest text-xs hover:bg-gray-200 transition-all duration-300 rounded-lg"
+                                >
+                                    SIGN IN
+                                </button>
+                                <button
+                                    onClick={() => setView('signup')}
+                                    className="w-full py-4 bg-transparent border border-white/20 text-white font-medium tracking-widest text-xs hover:bg-white/5 transition-all duration-300 rounded-lg"
+                                >
+                                    CREATE ACCOUNT
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            // SIGNUP SUCCESS
+            if (view === 'signup-success') {
+                return (
+                    <div className="min-h-screen bg-black text-white flex items-center justify-center p-6">
+                        <div className="max-w-md w-full bg-white/5 backdrop-blur-xl border border-white/10 p-12 rounded-3xl text-center">
+                            <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1"><polyline points="20 6 9 17 4 12" /></svg>
+                            </div>
+                            <h2 className="text-xl font-light tracking-widest mb-4">WELCOME</h2>
+                            <p className="text-gray-400 font-light mb-8 leading-relaxed">
+                                Your account has been created successfully. We've sent a welcome email to your inbox.
+                            </p>
+                            <button
+                                onClick={() => setView('dashboard')}
+                                className="w-full py-4 bg-white text-black font-medium tracking-widest text-xs rounded-xl hover:bg-gray-200 transition-all"
+                            >
+                                CONTINUE TO DASHBOARD
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            // FORGOT PASSWORD
+            if (view === 'forgot-password') {
+                return (
+                    <div className="min-h-screen bg-black text-white flex items-center justify-center p-6">
+                        <div className="max-w-md w-full bg-white/5 backdrop-blur-xl border border-white/10 p-10 rounded-3xl relative">
+                            <button onClick={() => setView('signin')} className="absolute top-6 right-6 text-gray-500 hover:text-white">✕</button>
+
+                            <h2 className="text-xl font-light tracking-widest mb-2 text-center">RECOVER ACCOUNT</h2>
+                            <p className="text-xs text-gray-500 text-center mb-8">Enter your email to receive a reset link</p>
+
+                            {successMsg ? (
+                                <div className="text-center">
+                                    <div className="p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 text-sm mb-6">
+                                        {successMsg}
+                                    </div>
+                                    <button onClick={() => setView('signin')} className="text-xs text-gray-400 hover:text-white underline">Back to Sign In</button>
+                                </div>
+                            ) : (
+                                <form onSubmit={handleForgotPassword} className="space-y-6">
+                                    <InputField
+                                        type="email"
+                                        placeholder="Email Address"
+                                        value={formData.email}
+                                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                        icon={IconMail}
+                                    />
+                                    {error && <p className="text-red-400 text-xs text-center">{error}</p>}
+                                    <button type="submit" className="w-full py-4 bg-white text-black font-medium tracking-widest text-xs rounded-full hover:bg-gray-200 transition-all">
+                                        SEND RESET LINK
+                                    </button>
+                                </form>
+                            )}
+                        </div>
+                    </div>
+                );
+            }
+
+            // RESET PASSWORD
+            if (view === 'reset-password') {
+                return (
+                    <div className="min-h-screen bg-black text-white flex items-center justify-center p-6">
+                        <div className="max-w-md w-full bg-white/5 backdrop-blur-xl border border-white/10 p-10 rounded-3xl">
+                            <h2 className="text-xl font-light tracking-widest mb-8 text-center">SET NEW PASSWORD</h2>
+
+                            {successMsg ? (
+                                <div className="text-center text-green-400 text-sm">{successMsg}</div>
+                            ) : (
+                                <form onSubmit={handleResetPassword} className="space-y-6">
+                                    <InputField
+                                        type="password"
+                                        placeholder="New Password"
+                                        value={resetPassword}
+                                        onChange={(e) => setResetPassword(e.target.value)}
+                                        icon={IconLock}
+                                    />
+                                    <InputField
+                                        type="password"
+                                        placeholder="Confirm New Password"
+                                        value={resetConfirmPassword}
+                                        onChange={(e) => setResetConfirmPassword(e.target.value)}
+                                        icon={IconLock}
+                                    />
+                                    {error && <p className="text-red-400 text-xs text-center">{error}</p>}
+                                    <button type="submit" className="w-full py-4 bg-white text-black font-medium tracking-widest text-xs rounded-full hover:bg-gray-200 transition-all">
+                                        UPDATE PASSWORD
+                                    </button>
+                                </form>
+                            )}
+                        </div>
+                    </div>
+                );
+            }
+
+            // DASHBOARD - Redirect to React SPA
+            if (view === 'dashboard' && currentUser) {
+                // Redirect to the React SPA dashboard
+                window.location.href = '/dashboard';
+                return null;
+            }
+
+            // SIGNIN / SIGNUP FORMS (Simplified for brevity, using same style as others)
+            return (
+                <div className="min-h-screen bg-black text-white flex items-center justify-center p-6 relative overflow-hidden">
+                    {/* Background Elements */}
+                    <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-purple-900/20 rounded-full blur-[120px] pointer-events-none"></div>
+                    <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-900/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+                    <div className="max-w-md w-full bg-white/5 backdrop-blur-xl border border-white/10 p-10 rounded-3xl relative z-10 shadow-2xl">
+                        <div className="flex justify-between items-center mb-8">
+                            <h2 className="text-xl font-light tracking-widest">
+                                {view === 'signin' ? 'SIGN IN' : 'CREATE ACCOUNT'}
+                            </h2>
+                            <button onClick={onClose} className="text-gray-500 hover:text-white transition-colors">✕</button>
+                        </div>
+
+                        <form onSubmit={view === 'signin' ? handleSignin : handleSignup} className="space-y-5">
+                            {view === 'signup' && (
+                                <div className="grid grid-cols-2 gap-4">
+                                    <InputField
+                                        type="text" placeholder="First Name" value={formData.firstName}
+                                        onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                                        icon={IconUser}
+                                    />
+                                    <InputField
+                                        type="text" placeholder="Last Name" value={formData.lastName}
+                                        onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                                        icon={IconUser}
+                                    />
+                                </div>
+                            )}
+
+                            <InputField
+                                type="email" placeholder="Email Address" value={formData.email}
+                                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                icon={IconMail}
+                            />
+
+                            <div className="relative">
+                                <InputField
+                                    type={showPassword ? "text" : "password"}
+                                    placeholder="Password"
+                                    value={formData.password}
+                                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                    icon={IconLock}
+                                />
+                                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white">
+                                    {showPassword ? (
+                                        <EyeOff size={18} />
+                                    ) : (
+                                        <Eye size={18} />
+                                    )}
+                                </button>
+                            </div>
+
+                            {view === 'signup' && (
+                                <InputField
+                                    type="password" placeholder="Confirm Password" value={formData.confirmPassword}
+                                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                                    icon={IconLock}
+                                />
+                            )}
+
+                            {view === 'signin' && (
+                                <div className="flex justify-end">
+                                    <button type="button" onClick={() => setView('forgot-password')} className="text-xs text-gray-400 hover:text-white transition-colors">
+                                        Forgot Password?
+                                    </button>
+                                </div>
+                            )}
+
+                            {error && <p className="text-red-400 text-xs text-center">{error}</p>}
+
+                            <button type="submit" className="w-full py-4 bg-white text-black font-medium tracking-widest text-xs rounded-full hover:bg-gray-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]">
+                                {view === 'signin' ? 'ENTER' : 'JOIN VALENCIRÉ®'}
+                            </button>
+
+                            <div className="pt-6 text-center border-t border-white/10">
+                                <p className="text-xs text-gray-500 mb-2">
+                                    {view === 'signin' ? "Don't have an account?" : "Already a member?"}
+                                </p>
+                                <button type="button" onClick={() => setView(view === 'signin' ? 'signup' : 'signin')} className="text-xs text-white tracking-widest hover:opacity-80 transition-opacity">
+                                    {view === 'signin' ? 'CREATE ACCOUNT' : 'SIGN IN'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            );
+        };
+
+        // Mount React app
+        const authModalRoot = document.getElementById('auth-modal');
+        const root = ReactDOM.createRoot(authModalRoot);
+
+        window.openAuthModal = (initialView = 'landing') => {
+            document.getElementById('auth-modal').classList.add('active');
+            root.render(<ValencireAuthSystem initialView={initialView} onClose={() => {
+                document.getElementById('auth-modal').classList.remove('active');
+            }} />);
+        };
+
+        // Check if user is logged in on page load
+        const session = localStorage.getItem('valencire_token'); // Fix: consistency with token key
+
+        // Handle URL Query Params for auto-actions
+        const urlParams = new URLSearchParams(window.location.search);
+        const action = urlParams.get('action');
+
+        if (action === 'signin') {
+            // Use setTimeout to ensure DOM is fully ready if needed, though script is at bottom
+            setTimeout(() => {
+                // Explicitly set view to signin before opening
+                // We can access the component via a custom event or just let the default opener work 
+                // and the component (if it was reading props) would handle it.
+                // But since our openAuthModal just renders the component, we might default it.
+
+                // Simpler: Just open it. The user will see the default view (Signin usually if we set it, or Landing).
+                // We should ideally force 'signin' view.
+                // Since we can't easily pass props to the already defined render function without changing it:
+
+                document.getElementById('auth-modal').classList.add('active');
+                const root = ReactDOM.createRoot(document.getElementById('auth-modal')); // Re-create root might warn, but let's stick to the existing pattern or better: reuse logic
+
+                // Reuse the window.openAuthModal but we need to ensure it opens Sign In
+                // Let's modify ValencireAuthSystem to accept an initialView prop if possible, 
+                // or just rely on the user clicking "Sign In" from the landing modal if we can't easily change it.
+                // Better: Modify window.openAuthModal to accept a view.
+
+                window.openAuthModal('signin');
+            }, 100);
+        } else if (session) {
+            // Auto-open dashboard if logged in (optional)
+            // openAuthModal();
+        }
+    </script>
+
+    <script>
+        const products = [
+            {
+                id: 1,
+                name: "AMETHYST NOIR™",
+                price: 1800,
+                category: "compression",
+                theme: "white",
+                images: {
+                    back: "assets/images/BACK 1.png",
+                    front: "assets/images/FRONT 1.png"
+                },
+
+
+            },
+            {
+                id: 2,
+                name: "BLOOD NOIR™",
+                price: 1800,
+                category: "compression",
+                theme: "white",
+                images: {
+                    back: "assets/images/BACK 2.png",
+                    front: "assets/images/FRONT 2.png"
+                }
+
+            },
+            {
+                id: 3,
+                name: "PHANTOM PRO™",
+                price: 1950,
+                category: "compression",
+                theme: "white",
+                images: {
+                    back: "assets/images/valencire blue back .png",
+                    front: "assets/images/valencire blue final out .png"
+                }
+            }
+        ];
+
+        let cart = [];
+
+        window.onload = () => {
+            loadCart();
+            renderProducts();
+        };
+
+        function loadCart() {
+            const saved = localStorage.getItem('valencire_cart');
+            if (saved) {
+                cart = JSON.parse(saved);
+                updateCartDisplay();
+            }
+        }
+
+        function saveCart() {
+            localStorage.setItem('valencire_cart', JSON.stringify(cart));
+            updateCartDisplay();
+        }
+
+        function updateCartDisplay() {
+            const countBadge = document.getElementById('cartCount');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+            if (totalItems > 0) {
+                countBadge.textContent = totalItems;
+                countBadge.classList.add('active');
+            } else {
+                countBadge.classList.remove('active');
+            }
+
+            const cartPanel = document.querySelector('.cart-empty');
+            if (cart.length > 0 && cartPanel) {
+                let cartHTML = '';
+                cart.forEach((item, index) => {
+                    cartHTML += `
+                        <div style="display:flex; gap:20px; margin-bottom:30px; padding-bottom:30px; border-bottom:1px solid rgba(245,245,245,0.06);">
+                            <img src="${item.image}" style="width:100px; height:130px; object-fit:cover; background:#151515; border-radius:8px;" onerror="this.style.display='none'">
+                            <div style="flex:1;">
+                                <div style="font-size:13px; letter-spacing:2px; margin-bottom:8px; text-transform:uppercase;">${item.name}</div>
+                                <div style="font-size:11px; opacity:.6; margin-bottom:12px;">Size: ${item.size}</div>
+                                <div style="font-size:14px; margin-bottom:12px; font-weight:500;">₹${item.price.toLocaleString()}</div>
+                                <div style="display:flex; align-items:center; gap:12px;">
+                                    <button onclick="changeQuantity(${index}, -1)" style="width:28px; height:28px; background:transparent; border:1px solid rgba(245,245,245,0.25); color:#f5f5f5; cursor:pointer; border-radius:4px;">−</button>
+                                    <span style="font-size:13px; min-width:30px; text-align:center;">${item.quantity}</span>
+                                    <button onclick="changeQuantity(${index}, 1)" style="width:28px; height:28px; background:transparent; border:1px solid rgba(245,245,245,0.25); color:#f5f5f5; cursor:pointer; border-radius:4px;">+</button>
+                                </div>
+                                <div onclick="removeFromCart(${index})" style="font-size:11px; opacity:.5; cursor:pointer; margin-top:8px; color:#c41e3a;">Remove</div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                cartHTML += `
+                    <div style="padding-top:30px; border-top:1px solid rgba(245,245,245,0.1); margin-top:20px;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:16px; font-size:13px;">
+                            <span>Subtotal</span>
+                            <span>₹${subtotal.toLocaleString()}</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; margin-bottom:16px; font-size:13px;">
+                            <span>Shipping</span>
+                            <span>Free</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; font-size:16px; font-weight:500; margin-top:20px; padding-top:20px; border-top:1px solid rgba(245,245,245,0.1);">
+                            <span>Total</span>
+                            <span>₹${subtotal.toLocaleString()}</span>
+                        </div>
+                        <button onclick="checkout()" style="width:100%; padding:18px; background:#f5f5f5; border:none; color:#0a0a0a; font-size:12px; letter-spacing:3px; cursor:pointer; margin-top:24px; text-transform:uppercase; font-weight:600; border-radius:8px; transition:.3s ease;">PROCEED TO CHECKOUT</button>
+                    </div>
+                `;
+
+                document.getElementById('cartPanel').innerHTML = `
+                    <div class="panel-header">
+                        <h2>YOUR CART</h2>
+                        <span class="close-btn" onclick="toggleCart()">✕</span>
+                    </div>
+                    ${cartHTML}
+                `;
+            }
+        }
+
+        function changeQuantity(index, change) {
+            cart[index].quantity += change;
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+            saveCart();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            saveCart();
+            showNotif('Item removed from cart');
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                showNotif('Your cart is empty!');
+                return;
+            }
+
+            if (!isLoggedIn()) {
+                redirectToAuth();
+                return;
+            }
+
+            // Mock Checkout Process
+            showNotif('Processing Order...');
+
+            setTimeout(() => {
+                cart = [];
+                saveCart();
+                // Show a simple custom modal or alert for success
+                const successModal = document.createElement('div');
+                successModal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);display:flex;align-items:center;justify-content:center;z-index:9999;backdrop-filter:blur(10px);';
+                successModal.innerHTML = `
+                    <div style="background:#111; border:1px solid #333; padding:40px; border-radius:24px; text-align:center; max-width:400px; animation: fadeIn 0.5s ease;">
+                        <div style="width:60px; height:60px; background:rgba(255,255,255,0.1); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px;">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <h2 style="color:white; font-size:20px; letter-spacing:2px; margin-bottom:12px; font-weight:300;">ORDER PLACED</h2>
+                        <p style="color:#888; font-size:14px; line-height:1.6; margin-bottom:30px;">Thank you for your purchase. A confirmation email has been sent.</p>
+                        <button onclick="this.closest('div').parentElement.remove()" style="width:100%; padding:16px; background:white; color:black; border:none; border-radius:999px; font-weight:600; letter-spacing:1px; cursor:pointer;">CONTINUE SHOPPING</button>
+                    </div>
+                `;
+                document.body.appendChild(successModal);
+
+                document.getElementById('cartPanel').classList.remove('active');
+            }, 1500);
+        }
+
+        function renderProducts() {
+            const container = document.getElementById('products');
+            products.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="product-card" data-theme="${p.theme}">
+                        <div class="product-image" onclick="viewProduct(${p.id})" style="cursor:pointer;">
+                            <img src="${p.images.back}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/320x400/0a0a0a/7f5cff?text=${encodeURIComponent(p.name)}'">
+                        </div>
+                        <div class="product-name">${p.name}</div>
+                        <div class="product-price">₹${p.price.toLocaleString()}</div>
+                        <button class="add-to-cart-btn" onclick="addToCart(${p.id})">Add to Cart</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function viewProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const slug = product.name
+                .toLowerCase()
+                .replace(/™/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/[^a-z0-9-]/g, '');
+
+            window.location.href = `pages/product.html?product=${slug}`;
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const size = 'M';
+            const existingItem = cart.find(item => item.id === productId && item.size === size);
+
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({
+                    id: productId,
+                    name: product.name,
+                    price: product.price,
+                    size: size,
+                    image: product.images.back,
+                    quantity: 1
+                });
+            }
+
+            saveCart();
+            showNotif('Added to cart!');
+        }
+
+        function toggleCart() {
+            const panel = document.getElementById('cartPanel');
+            panel.classList.toggle('active');
+        }
+
+        function scrollToShop() {
+            document.getElementById('shop').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showNotif(msg) {
+            const n = document.getElementById('notification');
+            n.textContent = msg;
+            n.classList.add('show');
+            setTimeout(() => n.classList.remove('show'), 3000);
+        }
+
+        function subscribe(e) {
+            e.preventDefault();
+            showNotif('Thank you for subscribing!');
+            e.target.reset();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.getElementById('cartPanel').classList.remove('active');
+                document.getElementById('auth-modal').classList.remove('active');
+            }
+        });
+        function redirectToAuth() {
+            // Check if user is logged in
+            if (isLoggedIn()) {
+                // Redirect to React SPA dashboard
+                window.location.href = '/dashboard';
+            } else {
+                // Open auth modal for login
+                window.openAuthModal();
+            }
+        }
+
+        function isLoggedIn() {
+            return !!localStorage.getItem('valencire_token');
+        }
+
+    </script>
+
 </body>
 
 </html>
